@@ -5,3 +5,15 @@
 body {
   background-color: #293742;
 }
+
+div.debug-header {
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+  background-color: rgb(75 85 99);
+  text-align: center;
+}
+
+div.sticky-header {
+  position: sticky;
+  top: 0; /* Don't forget this, required for the stickiness */
+}

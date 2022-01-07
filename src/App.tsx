@@ -57,7 +57,7 @@ export function App() {
           </div>
           :
           <div className="p-8 h-full flex flex-col">
-            <Viewer data={data} names="p-4 rounded-lg bg-gray-800 grow" handleClose={handleClose} />
+            <Viewer data={data} names="grow" handleClose={handleClose} />
           </div>
       }
 

@@ -24,13 +24,19 @@
   },
   "dependencies": {
     "@blueprintjs/core": "^3.51.3",
+    "@blueprintjs/popover2": "^0.12.9",
     "@reduxjs/toolkit": "^1.6.2",
     "@types/pako": "^1.0.3",
+    "@types/react-virtualized-auto-sizer": "^1.0.1",
+    "@types/react-window": "^1.8.5",
     "flexboxgrid": "^6.3.1",
     "pako": "^2.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-dropzone": "^11.4.2",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-virtualized-auto-sizer": "^1.0.6",
+    "react-window": "^1.8.6",
     "styled-components": "^5.3.3",
     "wouter": "^2.8.0-alpha.2"
   }
