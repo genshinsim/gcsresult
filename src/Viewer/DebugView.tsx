@@ -1,27 +1,21 @@
 import { DebugItemView } from "./DebugItemView";
-import { parseLog } from "./parse";
+import { DebugRow, parseLog } from "./parse";
 import InfiniteScroll from "react-infinite-scroll-component";
 import React from "react";
 
 export function Debugger({
-  log,
-  active,
-  team,
-  selected,
+  data,
+  team
 }: {
-  log: string;
-  active: string;
-  team: string[];
-  selected: string[];
+  data: DebugRow[]
+  team: string[]
 }) {
   const [rowsLoaded, setRowsLoaded] = React.useState<number>(50);
 
-  const loaded = parseLog(active, team, log, selected);
-  const maxCount = loaded.length;
-  loaded.splice(rowsLoaded);
+  const maxCount = data.length;
 
   console.log("max: ", maxCount);
-  console.log("loaded: ", loaded.length);
+  console.log("loaded: ", rowsLoaded);
 
   const handleLoadMore = () => {
     console.log("loading more");
@@ -42,9 +36,12 @@ export function Debugger({
     );
   });
 
-  const rows = loaded.map((row) => {
+  const rows : JSX.Element[] = []
+
+  for (let i = 0; i < rowsLoaded; i++) {
+    const row = data[i]
     let count = 0;
-    const cols = row.slots.map((slot, index) => {
+    const cols = row.slots.map((slot, ci) => {
       const events = slot.map((e, ei) => {
         count++;
         return <DebugItemView item={e} key={ei} />;
@@ -52,9 +49,9 @@ export function Debugger({
 
       return (
         <div
-          key={index}
+          key={ci}
           className={
-            row.active == index
+            row.active == ci
               ? "border-l-2 border-gray-500 bg-gray-400	"
               : "border-l-2 border-gray-500"
           }
@@ -65,11 +62,11 @@ export function Debugger({
     });
 
     if (count === 0) {
-      return null;
+      continue
     }
 
     //map out each col
-    return (
+    rows.push(
       <div className="flex flex-row" key={row.key}>
         <div
           className="text-right text-gray-100 border-b-2 border-gray-500"
@@ -83,7 +80,7 @@ export function Debugger({
         <div style={{ width: "20px", minWidth: "20px" }} />
       </div>
     );
-  });
+  }
 
   return (
     <div className="m-2 p-2 rounded-md bg-gray-600 text-xs">
@@ -104,9 +101,9 @@ export function Debugger({
       </div>
       <div className="flex flex-col">
         <InfiniteScroll
-          dataLength={loaded.length} //This is important field to render the next data
+          dataLength={rowsLoaded} //This is important field to render the next data
           next={handleLoadMore}
-          hasMore={loaded.length < maxCount}
+          hasMore={rowsLoaded < maxCount}
           loader={<h4>Loading...</h4>}
           endMessage={
             <p style={{ textAlign: "center" }}>

@@ -3,6 +3,7 @@ import React from "react";
 import { Debugger } from "./DebugView";
 import { Options, OptionsProp } from "./Options";
 import AutoSizer from "react-virtualized-auto-sizer"
+import { parseLog } from "./parse";
 
 export interface SimResults {
   is_damage_mode: boolean;
@@ -130,6 +131,8 @@ export function Viewer(props: ViewerProps) {
 
   let data: SimResults = JSON.parse(props.data);
 
+  const parsed = parseLog(data.active_char, data.char_names, data.debug, selected);
+
   const optProps: OptionsProp = {
     isOpen: optOpen,
     handleClose: () => {
@@ -166,10 +169,8 @@ export function Viewer(props: ViewerProps) {
     case "debug":
       active = (
         <Debugger
-          log={data.debug}
-          active={data.active_char}
+          data={parsed}
           team={data.char_names}
-          selected={selected}
         />
       );
   }
