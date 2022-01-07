@@ -26,7 +26,7 @@ export function Debugger({
   const handleLoadMore = () => {
     console.log("loading more");
     if (rowsLoaded < maxCount) {
-      let next = rowsLoaded + 30;
+      let next = rowsLoaded + 20;
       if (next > maxCount) {
         next = maxCount;
       }
@@ -106,7 +106,7 @@ export function Debugger({
         <InfiniteScroll
           dataLength={loaded.length} //This is important field to render the next data
           next={handleLoadMore}
-          hasMore={true}
+          hasMore={loaded.length < maxCount}
           loader={<h4>Loading...</h4>}
           endMessage={
             <p style={{ textAlign: "center" }}>
@@ -114,6 +114,7 @@ export function Debugger({
             </p>
           }
           scrollableTarget="scroll-target"
+          scrollThreshold={0.5}
         >
           {rows}
         </InfiniteScroll>
