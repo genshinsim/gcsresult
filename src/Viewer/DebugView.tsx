@@ -1,24 +1,33 @@
 import { DebugItemView } from "./DebugItemView";
 import { DebugRow, parseLog } from "./parse";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { VariableSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 import React from "react";
 
-export function Debugger({
-  data,
-  team
-}: {
-  data: DebugRow[]
-  team: string[]
-}) {
+//every time i scroll x pixels, i want to add at least x pixels worth of items to be rendered and remove x pixels worth of items from the top
+//every item that gets added should have a min pixel height
+//we want to maintain at least container height + 100% worth items rendered
+
+export function Debugger({ data, team, width, height }: { data: DebugRow[]; team: string[], width: number, height: number }) {
   const [rowsLoaded, setRowsLoaded] = React.useState<number>(50);
+
+  //keep a reference to the rendered list
+  const listRef = React.useRef<HTMLDivElement>(null);;
 
   const maxCount = data.length;
 
   console.log("max: ", maxCount);
-  console.log("loaded: ", rowsLoaded);
+  console.log("loaded 2: ", rowsLoaded);
+
+  var targ = document.getElementById("scroll-target");
+  console.log("scroll target: ", targ);
+  if (targ) {
+    console.log(targ?.scrollTop);
+  }
 
   const handleLoadMore = () => {
-    console.log("loading more");
+    console.log("loading");
     if (rowsLoaded < maxCount) {
       let next = rowsLoaded + 20;
       if (next > maxCount) {
@@ -36,10 +45,10 @@ export function Debugger({
     );
   });
 
-  const rows : JSX.Element[] = []
+  const rows: JSX.Element[] = [];
 
   for (let i = 0; i < rowsLoaded; i++) {
-    const row = data[i]
+    const row = data[i];
     let count = 0;
     const cols = row.slots.map((slot, ci) => {
       const events = slot.map((e, ei) => {
@@ -62,7 +71,7 @@ export function Debugger({
     });
 
     if (count === 0) {
-      continue
+      continue;
     }
 
     //map out each col
@@ -99,22 +108,8 @@ export function Debugger({
         </div>
         <div style={{ width: "20px", minWidth: "20px" }} />
       </div>
-      <div className="flex flex-col">
-        <InfiniteScroll
-          dataLength={rowsLoaded} //This is important field to render the next data
-          next={handleLoadMore}
-          hasMore={rowsLoaded < maxCount}
-          loader={<h4>Loading...</h4>}
-          endMessage={
-            <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-          scrollableTarget="scroll-target"
-          scrollThreshold={0.5}
-        >
+      <div className="flex flex-col" ref={listRef}>
           {rows}
-        </InfiniteScroll>
       </div>
     </div>
   );

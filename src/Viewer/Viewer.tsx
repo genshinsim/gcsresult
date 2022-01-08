@@ -2,7 +2,7 @@ import { Button, Tab, Tabs } from "@blueprintjs/core";
 import React from "react";
 import { Debugger } from "./DebugView";
 import { Options, OptionsProp } from "./Options";
-import AutoSizer from "react-virtualized-auto-sizer"
+import AutoSizer from "react-virtualized-auto-sizer";
 import { parseLog } from "./parse";
 
 export interface SimResults {
@@ -131,7 +131,12 @@ export function Viewer(props: ViewerProps) {
 
   let data: SimResults = JSON.parse(props.data);
 
-  const parsed = parseLog(data.active_char, data.char_names, data.debug, selected);
+  const parsed = parseLog(
+    data.active_char,
+    data.char_names,
+    data.debug,
+    selected
+  );
 
   const optProps: OptionsProp = {
     isOpen: optOpen,
@@ -158,28 +163,8 @@ export function Viewer(props: ViewerProps) {
     options: opts,
   };
 
-  let active: JSX.Element = <div>Nothing here</div>;
-  switch (tabID) {
-    case "result":
-      active = <TextSummary data={data} />;
-      break;
-    case "config":
-      active = <Config data={data} />;
-      break;
-    case "debug":
-      active = (
-        <Debugger
-          data={parsed}
-          team={data.char_names}
-        />
-      );
-  }
-
   return (
-    <div
-      className={props.names + " pb-4 rounded-lg bg-gray-800 flex flex-col"}
-      
-    >
+    <div className={props.names + " pb-4 rounded-lg bg-gray-800 flex flex-col"}>
       <div className="flex flex-row sticky top-0 bg-gray-800 rounded-tl-lg rounded-tr-lg pt-4 pl-4 pr-4  pb-2">
         <Tabs animate large selectedTabId={tabID} onChange={handleTabChange}>
           <Tab id="result" title="Summary" />
@@ -201,18 +186,21 @@ export function Viewer(props: ViewerProps) {
       </div>
 
       <div className="mt-2 grow overflow-y-auto" id="scroll-target">
-      <AutoSizer>
-          {
-              ({height, width}) => (
-                <div style={{height: height, width: width-25}}>
-                    {active}
-                </div>
-              )
-          }
-      </AutoSizer>
+        <AutoSizer>
+          {({ height, width }) => (
+            <div style={{ height: height, width: width - 25 }}>
+              {
+                {
+                  result: <TextSummary data={data} />,
+                  config: <Config data={data} />,
+                  debug: <Debugger data={parsed} team={data.char_names} width={width} height={height} />,
+                }[tabID]
+              }
+            </div>
+          )}
+        </AutoSizer>
       </div>
 
-      
       <Options {...optProps} />
     </div>
   );

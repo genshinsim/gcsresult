@@ -233,7 +233,7 @@ export function parseLog(active: string, team: string[], log: string, selected: 
     slots[index].push(e);
   });
 
-  console.log(result);
+  // console.log(result);
 
   return result;
 }
