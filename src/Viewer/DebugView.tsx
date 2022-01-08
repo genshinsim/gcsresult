@@ -1,7 +1,6 @@
 import { DebugItemView } from "./DebugItemView";
 import { DebugRow } from "./parse";
 import { useVirtual } from "react-virtual";
-import { VariableSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 import React from "react";
 
@@ -111,14 +110,15 @@ export function Debugger({ data, team }: { data: DebugRow[]; team: string[] }) {
               {rowVirtualizer.virtualItems.map((virtualRow) => (
                 <div
                   key={virtualRow.index}
-                  ref={virtualRow.measureRef}
+                  // ref={virtualRow.measureRef}
+                  ref={(el) => virtualRow.measureRef(el)}
                   style={{
                     position: "absolute",
                     top: 0,
                     left: 0,
                     width: "100%",
                     // Positions the virtual elements at the right place in container.
-                    minHeight: `${virtualRow.size - 10}px`,
+                    // minHeight: `${virtualRow.size - 10}px`,
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
                 >
