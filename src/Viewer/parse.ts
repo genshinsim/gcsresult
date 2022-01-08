@@ -17,7 +17,12 @@ export interface DebugItem {
   target: "";
 }
 
-export function parseLog(active: string, team: string[], log: string, selected: string[]) {
+export function parseLog(
+  active: string,
+  team: string[],
+  log: string,
+  selected: string[]
+) {
   console.log("parsing log");
   //find initial active char
   let activeIndex = team.findIndex((e) => e === active);
@@ -28,11 +33,13 @@ export function parseLog(active: string, team: string[], log: string, selected: 
 
   let lastFrame = -1;
 
-//   console.log(log);
+  //   console.log(log);
   //split the logs by new line
   const lines = log.split(/\r?\n/);
 
   let rowKey = 0;
+  //bool to check if there are elements added
+  let added = false;
 
   lines.forEach((line) => {
     if (line === "") {
@@ -68,12 +75,17 @@ export function parseLog(active: string, team: string[], log: string, selected: 
 
     //check if frame changed; if so append stuff
     if (d.frame !== lastFrame) {
-      result.push({
-        key: rowKey,
-        f: lastFrame,
-        slots: slots,
-        active: activeIndex,
-      });
+      if (added) {
+        result.push({
+          key: rowKey,
+          f: lastFrame,
+          slots: slots,
+          active: activeIndex,
+        });
+      } else {
+        console.log("skipped adding: ", slots);
+      }
+      added = false;
       rowKey++;
       //reset
       lastFrame = d.frame;
@@ -102,7 +114,7 @@ export function parseLog(active: string, team: string[], log: string, selected: 
 
     //skip if event is not in selected
     if (selected.indexOf(e.event) == -1) {
-      return
+      return;
     }
 
     //set icon/color etc... based one vent
@@ -231,6 +243,7 @@ export function parseLog(active: string, team: string[], log: string, selected: 
     // console.log(e.char);
     // console.log(d);
     slots[index].push(e);
+    added = true;
   });
 
   // console.log(result);
