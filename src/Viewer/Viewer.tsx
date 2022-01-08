@@ -2,7 +2,6 @@ import { Button, Tab, Tabs } from "@blueprintjs/core";
 import React from "react";
 import { Debugger } from "./DebugView";
 import { Options, OptionsProp } from "./Options";
-import AutoSizer from "react-virtualized-auto-sizer"
 import { parseLog } from "./parse";
 
 export interface SimResults {
@@ -126,12 +125,21 @@ export function Viewer(props: ViewerProps) {
   const [optOpen, setOptOpen] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<string[]>(defOpts);
   const handleTabChange = (next: string) => {
+    if (next === "settings") {
+      setOptOpen(true);
+      return;
+    }
     setTabID(next);
   };
 
   let data: SimResults = JSON.parse(props.data);
 
-  const parsed = parseLog(data.active_char, data.char_names, data.debug, selected);
+  const parsed = parseLog(
+    data.active_char,
+    data.char_names,
+    data.debug,
+    selected
+  );
 
   const optProps: OptionsProp = {
     isOpen: optOpen,
@@ -158,61 +166,34 @@ export function Viewer(props: ViewerProps) {
     options: opts,
   };
 
-  let active: JSX.Element = <div>Nothing here</div>;
-  switch (tabID) {
-    case "result":
-      active = <TextSummary data={data} />;
-      break;
-    case "config":
-      active = <Config data={data} />;
-      break;
-    case "debug":
-      active = (
-        <Debugger
-          data={parsed}
-          team={data.char_names}
-        />
-      );
-  }
-
   return (
-    <div
-      className={props.names + " pb-4 rounded-lg bg-gray-800 flex flex-col"}
-      
-    >
-      <div className="flex flex-row sticky top-0 bg-gray-800 rounded-tl-lg rounded-tr-lg pt-4 pl-4 pr-4  pb-2">
-        <Tabs animate large selectedTabId={tabID} onChange={handleTabChange}>
-          <Tab id="result" title="Summary" />
-          <Tab id="graphs" title="Graphs" />
-          <Tab id="config" title="Config" />
-          <Tab id="debug" title="Debug" />
-        </Tabs>
-
-        <div className="ml-auto">
-          <Button
-            className="mr-2"
-            icon="cog"
-            onClick={() => {
-              setOptOpen(true);
-            }}
-          />
+    <div className={props.names + " p-4 rounded-lg bg-gray-800 flex flex-col"}>
+      <div className="flex flex-row  bg-gray-800 w-full">
+        <Tabs
+          selectedTabId={tabID}
+          onChange={handleTabChange}
+          className="w-full"
+        >
+          <Tab id="result" title="Summary" className="focus:outline-none" />
+          <Tab id="graphs" title="Graphs" className="focus:outline-none" />
+          <Tab id="config" title="Config" className="focus:outline-none" />
+          <Tab id="debug" title="Debug" className="focus:outline-none" />
+          <Tab id="settings" title="Settings" className="focus:outline-none" />
+          <Tabs.Expander />
           <Button icon="cross" intent="danger" onClick={props.handleClose} />
-        </div>
+        </Tabs>
       </div>
 
-      <div className="mt-2 grow overflow-y-auto" id="scroll-target">
-      <AutoSizer>
+      <div className="mt-2 grow">
+        {
           {
-              ({height, width}) => (
-                <div style={{height: height, width: width-25}}>
-                    {active}
-                </div>
-              )
-          }
-      </AutoSizer>
+            result: <TextSummary data={data} />,
+            config: <Config data={data} />,
+            debug: <Debugger data={parsed} team={data.char_names} />,
+          }[tabID]
+        }
       </div>
 
-      
       <Options {...optProps} />
     </div>
   );
