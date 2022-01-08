@@ -160,6 +160,7 @@ export function Graphs({ data }: { data: SimResults }) {
                 formatter={renderCustomizedLegend}
               />
               <Pie
+                isAnimationActive={false}
                 data={dmg}
                 dataKey="value"
                 nameKey="name"
@@ -192,6 +193,7 @@ export function Graphs({ data }: { data: SimResults }) {
                 formatter={renderCustomizedLegend}
               />
               <Pie
+                isAnimationActive={false}
                 data={fieldTime}
                 dataKey="value"
                 nameKey="name"
@@ -225,7 +227,12 @@ export function Graphs({ data }: { data: SimResults }) {
                   dataKey="name"
                   tick={{ fill: "white" }}
                 />
-                <Bar dataKey="value" cx="50%" cy="50%">
+                <Bar
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  isAnimationActive={false}
+                >
                   {dmgDetail.map((entry, index) => (
                     <Cell fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -248,7 +255,12 @@ export function Graphs({ data }: { data: SimResults }) {
                   tick={{ fill: "white" }}
                 />
                 <YAxis type="number" dataKey="value" tick={{ fill: "white" }} />
-                <Bar dataKey="value" cx="50%" cy="50%">
+                <Bar
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  isAnimationActive={false}
+                >
                   {useCountDetails.map((entry, index) => (
                     <Cell fill={COLORS[index % COLORS.length]} />
                   ))}

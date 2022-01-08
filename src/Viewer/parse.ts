@@ -82,8 +82,6 @@ export function parseLog(
           slots: slots,
           active: activeIndex,
         });
-      } else {
-        console.log("skipped adding: ", slots);
       }
       added = false;
       rowKey++;

@@ -3,7 +3,7 @@ import React from "react";
 import { Debugger } from "./DebugView";
 import { Graphs } from "./Graphs";
 import { Options, OptionsProp } from "./Options";
-import { parseLog } from "./parse";
+import { DebugRow, parseLog } from "./parse";
 
 export interface SimResults {
   is_damage_mode: boolean;
@@ -121,10 +121,19 @@ const defOpts = [
   "snapshot_mods",
 ];
 
-export function Viewer(props: ViewerProps) {
+type ViewProps = {
+  classes?: string;
+  selected: string[];
+  handleSetSelected: (next: string[]) => void;
+  data: SimResults;
+  parsed: DebugRow[];
+  handleClose: () => void;
+};
+
+function ViewOnly(props: ViewProps) {
   const [tabID, setTabID] = React.useState<string>("result");
   const [optOpen, setOptOpen] = React.useState<boolean>(false);
-  const [selected, setSelected] = React.useState<string[]>(defOpts);
+
   const handleTabChange = (next: string) => {
     if (next === "settings") {
       setOptOpen(true);
@@ -133,42 +142,35 @@ export function Viewer(props: ViewerProps) {
     setTabID(next);
   };
 
-  let data: SimResults = JSON.parse(props.data);
-
-  const parsed = parseLog(
-    data.active_char,
-    data.char_names,
-    data.debug,
-    selected
-  );
-
   const optProps: OptionsProp = {
     isOpen: optOpen,
     handleClose: () => {
       setOptOpen(false);
     },
     handleToggle: (t: string) => {
-      const i = selected.indexOf(t);
-      let next = [...selected];
+      const i = props.selected.indexOf(t);
+      let next = [...props.selected];
       if (i === -1) {
         next.push(t);
       } else {
         next.splice(i, 1);
       }
-      setSelected(next);
+      props.handleSetSelected(next);
     },
     handleClear: () => {
-      setSelected([]);
+      props.handleSetSelected([]);
     },
     handleResetDefault: () => {
-      setSelected(defOpts);
+      props.handleSetSelected(defOpts);
     },
-    selected: selected,
+    selected: props.selected,
     options: opts,
   };
 
   return (
-    <div className={props.names + " p-4 rounded-lg bg-gray-800 flex flex-col"}>
+    <div
+      className={props.classes + " p-4 rounded-lg bg-gray-800 flex flex-col"}
+    >
       <div className="flex flex-row  bg-gray-800 w-full">
         <Tabs
           selectedTabId={tabID}
@@ -188,10 +190,12 @@ export function Viewer(props: ViewerProps) {
       <div className="mt-2 grow">
         {
           {
-            result: <TextSummary data={data} />,
-            config: <Config data={data} />,
-            debug: <Debugger data={parsed} team={data.char_names} />,
-            graphs: <Graphs data={data} />,
+            result: <TextSummary data={props.data} />,
+            config: <Config data={props.data} />,
+            debug: (
+              <Debugger data={props.parsed} team={props.data.char_names} />
+            ),
+            graphs: <Graphs data={props.data} />,
           }[tabID]
         }
       </div>
@@ -199,4 +203,32 @@ export function Viewer(props: ViewerProps) {
       <Options {...optProps} />
     </div>
   );
+}
+
+export function Viewer(props: ViewerProps) {
+  const [selected, setSelected] = React.useState<string[]>(defOpts);
+
+  let data: SimResults = JSON.parse(props.data);
+
+  const parsed = parseLog(
+    data.active_char,
+    data.char_names,
+    data.debug,
+    selected
+  );
+
+  const handleSetSelected = (next: string[]) => {
+    setSelected(next);
+  };
+
+  let viewProps = {
+    classes: props.names,
+    selected: selected,
+    handleSetSelected: handleSetSelected,
+    data: data,
+    parsed: parsed,
+    handleClose: props.handleClose,
+  };
+
+  return <ViewOnly {...viewProps} />;
 }
