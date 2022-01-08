@@ -40,7 +40,7 @@ export function App() {
   };
 
   return (
-    <div className="bp3-dark h-screen">
+    <div className="h-screen">
       {data == "" ? (
         <div
           {...getRootProps()}
