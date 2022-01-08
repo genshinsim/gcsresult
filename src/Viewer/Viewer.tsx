@@ -1,6 +1,7 @@
 import { Button, Tab, Tabs } from "@blueprintjs/core";
 import React from "react";
 import { Debugger } from "./DebugView";
+import { Graphs } from "./Graphs";
 import { Options, OptionsProp } from "./Options";
 import { parseLog } from "./parse";
 
@@ -190,6 +191,7 @@ export function Viewer(props: ViewerProps) {
             result: <TextSummary data={data} />,
             config: <Config data={data} />,
             debug: <Debugger data={parsed} team={data.char_names} />,
+            graphs: <Graphs data={data} />,
           }[tabID]
         }
       </div>
