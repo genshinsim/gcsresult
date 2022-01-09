@@ -29,21 +29,21 @@ export function Summary({ data }: { data: SimResults }) {
           <span className="text-right">-</span>
           <span className="text-right">
             {data.dps_by_target[key].mean.toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
+              maximumFractionDigits: 0,
+              minimumFractionDigits: 0,
             })}
           </span>
           <span className="text-right">
             
             {(100 * data.dps_by_target[key].mean / data.dps.mean).toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
+              maximumFractionDigits: 0,
+              minimumFractionDigits: 0,
             })}{"%"}
           </span>
           <span className="text-right">
           {data.dps_by_target[key].sd ? data.dps_by_target[key].sd!.toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
+              maximumFractionDigits: 0,
+              minimumFractionDigits: 0,
             }) : "-"}
           </span>
         </div>
@@ -103,15 +103,15 @@ export function Summary({ data }: { data: SimResults }) {
                   <span className="text-right">
                     {" "}
                     {data.dps.mean.toLocaleString(undefined, {
-                      maximumFractionDigits: 2,
-                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 0,
+                      minimumFractionDigits: 0,
                     })}
                   </span>
                   <span className="text-right"></span>
                   <span className="text-right">
                     {data.dps.sd?.toLocaleString(undefined, {
-                      maximumFractionDigits: 2,
-                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 0,
+                      minimumFractionDigits: 0,
                     })}
                   </span>
                 </div>
