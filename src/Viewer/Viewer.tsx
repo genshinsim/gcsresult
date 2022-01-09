@@ -1,9 +1,11 @@
 import { Button, Tab, Tabs } from "@blueprintjs/core";
 import React from "react";
 import { Debugger } from "./DebugView";
+import { Details } from "./Details";
 import { Graphs } from "./Graphs";
 import { Options, OptionsProp } from "./Options";
 import { DebugRow, parseLog } from "./parse";
+import { Summary } from "./Summary";
 
 export interface SimResults {
   is_damage_mode: boolean;
@@ -36,37 +38,6 @@ export interface SummaryStats {
   min: number;
   max: number;
   sd?: number;
-}
-
-function TextSummary({ data }: { data: SimResults }) {
-  return (
-    <div>
-      <div className="m-2 p-2 rounded-md bg-gray-600">
-        In total, the team did{" "}
-        <strong className="text-gray-100">
-          {data.dps.mean.toLocaleString(undefined, {
-            maximumFractionDigits: 2,
-          })}
-        </strong>{" "}
-        damage per second to {data.num_targets} targets (on average, over{" "}
-        {data.iter} iterations [min:{" "}
-        {data.dps.min.toLocaleString(undefined, { maximumFractionDigits: 2 })},
-        max:{" "}
-        {data.dps.max.toLocaleString(undefined, { maximumFractionDigits: 2 })},
-        std dev:{" "}
-        {data.dps.sd?.toLocaleString(undefined, { maximumFractionDigits: 2 })}
-        ]), over the course of{" "}
-        {data.sim_duration.mean.toLocaleString(undefined, {
-          maximumFractionDigits: 2,
-        })}{" "}
-        seconds. The simulation took {(data.runtime / 1000000000).toFixed(3)}{" "}
-        seconds.
-      </div>
-      <div className="m-2 p-2 rounded-md bg-gray-600">
-        <pre className="whitespace-pre-wrap">{data.text}</pre>
-      </div>
-    </div>
-  );
 }
 
 function Config({ data }: { data: SimResults }) {
@@ -178,7 +149,7 @@ function ViewOnly(props: ViewProps) {
           className="w-full"
         >
           <Tab id="result" title="Summary" className="focus:outline-none" />
-          <Tab id="graphs" title="Graphs" className="focus:outline-none" />
+          <Tab id="details" title="Details" className="focus:outline-none" />
           <Tab id="config" title="Config" className="focus:outline-none" />
           <Tab id="debug" title="Debug" className="focus:outline-none" />
           <Tab id="settings" title="Settings" className="focus:outline-none" />
@@ -186,16 +157,15 @@ function ViewOnly(props: ViewProps) {
           <Button icon="cross" intent="danger" onClick={props.handleClose} />
         </Tabs>
       </div>
-
       <div className="mt-2 grow">
         {
           {
-            result: <TextSummary data={props.data} />,
+            result: <Summary data={props.data} />,
             config: <Config data={props.data} />,
             debug: (
               <Debugger data={props.parsed} team={props.data.char_names} />
             ),
-            graphs: <Graphs data={props.data} />,
+            details: <Details data={props.data} />,
           }[tabID]
         }
       </div>

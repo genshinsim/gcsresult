@@ -132,7 +132,7 @@ export function Graphs({ data }: { data: SimResults }) {
   });
 
   return (
-    <div className="m-2 p-2 rounded-md  flex flex-col gap-2">
+    <div className="m-2 flex flex-col gap-2">
       <div className="grid grid-cols-2 gap-2">
         <div className="rounded-md p-2 pt-10 bg-gray-600 relative">
           <span className="ml-2 mt-1 font-bold capitalize absolute top-0 left-0">
