@@ -11,14 +11,9 @@ export function Summary({ data }: { data: SimResults }) {
   });
 
   //calculate per target damage
-  let trgdps: number[] = [];
-  let total = 0;
   let trgs : JSX.Element[] = []
 
   for (const key in data.dps_by_target) {
-
-
-
     trgs.push(
       <div className="w-full flex flex-row" key={key}>
         <span className="w-24">
@@ -50,23 +45,8 @@ export function Summary({ data }: { data: SimResults }) {
       </div>
   )
   }
-  
-  for (let i = 1; i <= data.num_targets; i++) {
-    let dps = 0;
-    data.char_names.forEach((_, ci) => {
-      dps += data.damage_by_char_by_targets[ci][i].mean;
-    });
-    console.log(`target ${i} total: ${dps}`);
-    total += dps;
 
-    trgdps.push(dps);
-
-
-
-
-  }
-
-
+  console.log(data)
 
   return (
     <div>
