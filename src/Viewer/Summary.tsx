@@ -64,7 +64,7 @@ export function Summary({ data }: { data: SimResults }) {
                 {data.sim_duration.mean.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}{" "}
-                sec of combat (took {(data.runtime / 1000000000).toFixed(3)}{" "}
+                sec of combat ({data.iter} iterations took {(data.runtime / 1000000000).toFixed(3)}{" "}
                 seconds to run)
               </span>
             </div>

@@ -51,6 +51,9 @@ export function Debugger({ data, team }: { data: DebugRow[]; team: string[] }) {
   const rowVirtualizer = useVirtual({
     size: data.length,
     parentRef,
+    keyExtractor: React.useCallback((index : number) => {
+      return data[index].f
+    }, [data])
   });
 
   const char = team.map((c) => {
@@ -121,6 +124,7 @@ export function Debugger({ data, team }: { data: DebugRow[]; team: string[] }) {
                     // minHeight: `${virtualRow.size - 10}px`,
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
+                  // id={"virtual-row-"+virtualRow.key}
                 >
                   <Row row={data[virtualRow.index]} />
                 </div>
