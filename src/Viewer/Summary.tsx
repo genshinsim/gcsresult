@@ -13,6 +13,44 @@ export function Summary({ data }: { data: SimResults }) {
   //calculate per target damage
   let trgdps: number[] = [];
   let total = 0;
+  let trgs : JSX.Element[] = []
+
+  for (const key in data.dps_by_target) {
+
+
+
+    trgs.push(
+      <div className="w-full flex flex-row" key={key}>
+        <span className="w-24">
+          <span className="pl-2" />
+          {`Target ${key}:`}
+        </span>
+        <div className="grid grid-cols-4 grow">
+          <span className="text-right">-</span>
+          <span className="text-right">
+            {data.dps_by_target[key].mean.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}
+          </span>
+          <span className="text-right">
+            
+            {(100 * data.dps_by_target[key].mean / data.dps.mean).toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })}{"%"}
+          </span>
+          <span className="text-right">
+          {data.dps_by_target[key].sd ? data.dps_by_target[key].sd!.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            }) : "-"}
+          </span>
+        </div>
+      </div>
+  )
+  }
+  
   for (let i = 1; i <= data.num_targets; i++) {
     let dps = 0;
     data.char_names.forEach((_, ci) => {
@@ -22,35 +60,13 @@ export function Summary({ data }: { data: SimResults }) {
     total += dps;
 
     trgdps.push(dps);
+
+
+
+
   }
 
-  const trgs = trgdps.map((dps, i) => {
-    return (
-      <div className="w-full flex flex-row" key={i}>
-        <span className="w-24">
-          <span className="pl-2" />
-          {`Target ${i + 1}:`}
-        </span>
-        <div className="grid grid-cols-4 grow">
-          <span className="text-right">-</span>
-          <span className="text-right">
-            {dps.toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            })}
-          </span>
-          <span className="text-right">
-            
-            {(100 * dps / total).toLocaleString(undefined, {
-              maximumFractionDigits: 2,
-              minimumFractionDigits: 2,
-            })}{"%"}
-          </span>
-          <span className="text-right">-</span>
-        </div>
-      </div>
-    );
-  });
+
 
   return (
     <div>
@@ -69,18 +85,18 @@ export function Summary({ data }: { data: SimResults }) {
               </span>
             </div>
             <div className="max-w-4xl w-full pl-4 flex flex-col gap-1">
-              <div className="flex flex-row border-solid border-b-2">
+              <div className="flex flex-row border-solid border-b-2 font-bold">
                 <span className="w-24">Target</span>
                 <div className="grid grid-cols-4 grow">
                   <span className="text-right">Level</span>
                   <span className="text-right">Avg DPS</span>
                   <span className="text-right">%</span>
-                  <span className="text-right">std. dev.</span>
+                  <span className="text-right">Std. Dev.</span>
                 </div>
               </div>
               {trgs}
 
-              <div className="w-full flex flex-row border-solid border-t-2">
+              <div className="w-full flex flex-row border-solid border-t-2 font-bold">
                 <span className="w-24">Combined</span>
                 <div className="grid grid-cols-4 grow">
                   <span className="text-right"></span>
