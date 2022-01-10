@@ -22,7 +22,7 @@ export function App() {
         try {
           const restored = pako.inflate(binaryStr, { to: "string" });
           // ... continue processing
-          console.log(restored);
+          // console.log(restored);
           setData(restored);
           setMsg("");
         } catch (err) {

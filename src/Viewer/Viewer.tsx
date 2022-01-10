@@ -4,10 +4,10 @@ import { Config } from "./Config";
 import { SimResults } from "./DataType";
 import { Debugger } from "./DebugView";
 import { Details } from "./Details";
-import { Graphs } from "./Graphs";
+import Graphs from "./Graphs/Graphs";
 import { Options, OptionsProp } from "./Options";
 import { DebugRow, parseLog } from "./parse";
-import { Summary } from "./Summary";
+import Summary from "./Summary";
 import Ajv from "ajv";
 import schema from "./DataType.schema.json";
 

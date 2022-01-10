@@ -1,7 +1,7 @@
-import { Graphs } from "./Graphs";
+import Graphs from "./Graphs/Graphs";
 import { SimResults } from "./DataType";
 
-export function Summary({ data }: { data: SimResults }) {
+export default function Summary({ data }: { data: SimResults }) {
   const chars = data.char_names.map((e) => {
     return (
       <div key={e}>

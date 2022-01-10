@@ -14,9 +14,12 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
-import { SimResults } from "./DataType";
+import { SimResults } from "../DataType";
+import DPSOverTime from "./DPSOverTime";
+import ParticlesCount from "./ParticlesCount";
+import ReactionsTriggered from "./ReactionsTriggered";
 
-const COLORS = [
+export const COLORS = [
   "#2965CC",
   "#29A634",
   "#D99E0B",
@@ -34,15 +37,11 @@ const CHAR_COLORS = ["#4472C4", "#ED7D31", "#A5A5A5", "#70AD47"];
 
 const RADIAN = Math.PI / 180;
 
-const renderCustomizedLegend = (value: string, entry: any) => {
+export const renderCustomizedLegend = (value: string, entry: any) => {
   return <span className="text-gray-100">{value}</span>;
 };
 
-const renderCustomizedAxis = (value: string) => {
-  return <span className="text-gray-100">{value}</span>;
-};
-
-const renderCustomizedLabel = ({
+export const renderCustomizedLabel = ({
   cx,
   cy,
   midAngle,
@@ -76,7 +75,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-export function Graphs({ data }: { data: SimResults }) {
+export default function Graphs({ data }: { data: SimResults }) {
   const [charSelected, setCharSelected] = React.useState<string>("");
 
   let dmg: { name: string; value: number }[] = [];
@@ -130,6 +129,10 @@ export function Graphs({ data }: { data: SimResults }) {
       value: Math.round((100 * data.char_active_time[i].mean) / 60) / 100,
     });
   });
+
+  //reactions
+
+  //over time
 
   return (
     <div className="m-2 flex flex-col gap-2">
@@ -218,6 +221,9 @@ export function Graphs({ data }: { data: SimResults }) {
           </ResponsiveContainer>
         </div>
       </div>
+      <div className="bg-gray-600 relative rounded-md p-2 pt-10">
+        <DPSOverTime data={data} />
+      </div>
       {charSelected === "" ? null : (
         <div className="grid grid-cols-2 gap-2">
           <div className="rounded-md p-2 pt-10 bg-gray-600 relative">
@@ -276,6 +282,14 @@ export function Graphs({ data }: { data: SimResults }) {
           </div>
         </div>
       )}
+      <div className="grid grid-cols-2 gap-2">
+        <div className="rounded-md p-2 pt-10 bg-gray-600 relative">
+          <ReactionsTriggered data={data} />
+        </div>
+        <div className="rounded-md p-2 pt-10 bg-gray-600 relative">
+          <ParticlesCount data={data} />
+        </div>
+      </div>
     </div>
   );
 }
