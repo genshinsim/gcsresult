@@ -14,7 +14,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
-import { SimResults } from "./Viewer";
+import { SimResults } from "./DataType";
 
 const COLORS = [
   "#2965CC",
@@ -35,7 +35,7 @@ const CHAR_COLORS = ["#4472C4", "#ED7D31", "#A5A5A5", "#70AD47"];
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLegend = (value: string, entry: any) => {
-  return <span  className="text-gray-100">{value}</span>;
+  return <span className="text-gray-100">{value}</span>;
 };
 
 const renderCustomizedAxis = (value: string) => {
@@ -172,7 +172,10 @@ export function Graphs({ data }: { data: SimResults }) {
                 onClick={(e: any) => setCharSelected(e.name)}
               >
                 {dmg.map((entry, index) => (
-                  <Cell key={index} fill={CHAR_COLORS[index % CHAR_COLORS.length]} />
+                  <Cell
+                    key={index}
+                    fill={CHAR_COLORS[index % CHAR_COLORS.length]}
+                  />
                 ))}
               </Pie>
             </PieChart>
@@ -205,7 +208,10 @@ export function Graphs({ data }: { data: SimResults }) {
                 onClick={(e: any) => setCharSelected(e.name)}
               >
                 {useCount.map((entry, index) => (
-                  <Cell  key={index} fill={CHAR_COLORS[index % CHAR_COLORS.length]} />
+                  <Cell
+                    key={index}
+                    fill={CHAR_COLORS[index % CHAR_COLORS.length]}
+                  />
                 ))}
               </Pie>
             </PieChart>
@@ -234,7 +240,7 @@ export function Graphs({ data }: { data: SimResults }) {
                   isAnimationActive={false}
                 >
                   {dmgDetail.map((entry, index) => (
-                    <Cell  key={index} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Bar>
               </BarChart>
@@ -262,7 +268,7 @@ export function Graphs({ data }: { data: SimResults }) {
                   isAnimationActive={false}
                 >
                   {useCountDetails.map((entry, index) => (
-                    <Cell  key={index} fill={COLORS[index % COLORS.length]} />
+                    <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Bar>
               </BarChart>

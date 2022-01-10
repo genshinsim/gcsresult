@@ -1,5 +1,5 @@
 import { Graphs } from "./Graphs";
-import { SimResults } from "./Viewer";
+import { SimResults } from "./DataType";
 
 export function Summary({ data }: { data: SimResults }) {
   const chars = data.char_names.map((e) => {
@@ -11,7 +11,7 @@ export function Summary({ data }: { data: SimResults }) {
   });
 
   //calculate per target damage
-  let trgs : JSX.Element[] = []
+  let trgs: JSX.Element[] = [];
 
   for (const key in data.dps_by_target) {
     trgs.push(
@@ -29,24 +29,29 @@ export function Summary({ data }: { data: SimResults }) {
             })}
           </span>
           <span className="text-right">
-            
-            {(100 * data.dps_by_target[key].mean / data.dps.mean).toLocaleString(undefined, {
+            {(
+              (100 * data.dps_by_target[key].mean) /
+              data.dps.mean
+            ).toLocaleString(undefined, {
               maximumFractionDigits: 0,
               minimumFractionDigits: 0,
-            })}{"%"}
+            })}
+            {"%"}
           </span>
           <span className="text-right">
-          {data.dps_by_target[key].sd ? data.dps_by_target[key].sd!.toLocaleString(undefined, {
-              maximumFractionDigits: 0,
-              minimumFractionDigits: 0,
-            }) : "-"}
+            {data.dps_by_target[key].sd
+              ? data.dps_by_target[key].sd!.toLocaleString(undefined, {
+                  maximumFractionDigits: 0,
+                  minimumFractionDigits: 0,
+                })
+              : "-"}
           </span>
         </div>
       </div>
-  )
+    );
   }
 
-  console.log(data)
+  console.log(data);
 
   return (
     <div>
@@ -60,8 +65,8 @@ export function Summary({ data }: { data: SimResults }) {
                 {data.sim_duration.mean.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })}{" "}
-                sec of combat ({data.iter} iterations took {(data.runtime / 1000000000).toFixed(3)}{" "}
-                seconds to run)
+                sec of combat ({data.iter} iterations took{" "}
+                {(data.runtime / 1000000000).toFixed(3)} seconds to run)
               </span>
             </div>
             <div className="max-w-4xl w-full pl-4 flex flex-col gap-1">

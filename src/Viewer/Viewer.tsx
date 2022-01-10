@@ -1,54 +1,17 @@
 import { Button, Tab, Tabs } from "@blueprintjs/core";
 import React from "react";
+import { Config } from "./Config";
+import { SimResults } from "./DataType";
 import { Debugger } from "./DebugView";
 import { Details } from "./Details";
 import { Graphs } from "./Graphs";
 import { Options, OptionsProp } from "./Options";
 import { DebugRow, parseLog } from "./parse";
 import { Summary } from "./Summary";
+import Ajv from "ajv";
+import schema from "./DataType.schema.json";
 
-export interface SimResults {
-  is_damage_mode: boolean;
-  active_char: string;
-  char_names: string[];
-  damage_by_char: { [key: string]: SummaryStats }[];
-  damage_instances_by_char: { [key: string]: SummaryStats }[];
-  damage_by_char_by_targets: { [key: number]: SummaryStats }[];
-  char_active_time: SummaryStats[];
-  abil_usage_count_by_char: { [key: string]: SummaryStats }[];
-  particle_count: { [key: string]: SummaryStats };
-  reactions_triggered: { [key: string]: SummaryStats }[];
-  sim_duration: SummaryStats;
-  ele_uptime: { [key: number]: SummaryStats }[];
-  required_er: number[];
-  damage: SummaryStats;
-  dps: SummaryStats;
-  dps_by_target: { [key: number]: SummaryStats };
-  damage_over_time: { [key: string]: SummaryStats };
-  iter: number;
-  text: string;
-  debug: string;
-  runtime: number;
-  config_file: string;
-  num_targets: number;
-}
-
-export interface SummaryStats {
-  mean: number;
-  min: number;
-  max: number;
-  sd?: number;
-}
-
-function Config({ data }: { data: SimResults }) {
-  return (
-    <div>
-      <div className="m-2 p-2 rounded-md bg-gray-600">
-        <pre className="whitespace-pre-wrap">{data.config_file}</pre>
-      </div>
-    </div>
-  );
-}
+const ajv = new Ajv();
 
 type ViewerProps = {
   data: string;
@@ -179,6 +142,38 @@ export function Viewer(props: ViewerProps) {
   const [selected, setSelected] = React.useState<string[]>(defOpts);
 
   let data: SimResults = JSON.parse(props.data);
+  const validate = ajv.compile(schema.definitions["*"]);
+  const valid = validate(data);
+  console.log("checking if data is valid: " + valid);
+
+  if (!valid) {
+    console.log(validate.errors);
+    return (
+      <div
+        className={
+          props.names +
+          " p-4 rounded-lg bg-gray-800 flex flex-col w-full place-content-center items-center"
+        }
+      >
+        <div className="mb-4">
+          The data you have provided is not a valid format. Please click the
+          close button and upload a valid file.
+        </div>
+        <div>
+          <Button intent="danger" icon="cross" onClick={props.handleClose}>
+            Click Here To Close
+          </Button>
+        </div>
+        <div className="mt-8 rounded-md p-4 bg-gray-600">
+          <p>
+            If you think this error is invalid, please show the following
+            message to the developers
+          </p>
+          <pre>{JSON.stringify(validate.errors, null, 2)}</pre>
+        </div>
+      </div>
+    );
+  }
 
   const parsed = parseLog(
     data.active_char,
