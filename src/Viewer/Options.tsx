@@ -15,15 +15,17 @@ export function Options(props: OptionsProp) {
   const cols = props.options.map((o, index) => {
     return (
       <div className="flex flex-row gap-1 p-1 items-center" key={index}>
+          <label className="cursor-pointer">
         <input
           type="checkbox"
           checked={props.selected.indexOf(o) > -1}
-          className="checkbox"
+          className="checkbox cursor-pointer"
           onChange={() => props.handleToggle(o)}
         />
-        <span className="font-medium" style={{ color: eventColor(o) }}>
+        <span className="font-medium text-sm pl-1" style={{ color: eventColor(o) }}>
           {o}
         </span>
+      </label>
       </div>
     );
   });
