@@ -52,7 +52,6 @@ const defOpts = [
   "action",
   "energy",
   "pre_damage_mods",
-  "snapshot_mods",
 ];
 
 type ViewProps = {
