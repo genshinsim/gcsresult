@@ -377,6 +377,101 @@
         },
         "num_targets": {
           "type": "number"
+        },
+        "char_details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "level": {
+                "type": "number"
+              },
+              "element": {
+                "type": "string"
+              },
+              "max_level": {
+                "type": "number"
+              },
+              "cons": {
+                "type": "number"
+              },
+              "weapon": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "refine": {
+                    "type": "number"
+                  },
+                  "level": {
+                    "type": "number"
+                  },
+                  "max_level": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "name",
+                  "refine",
+                  "level",
+                  "max_level"
+                ]
+              },
+              "talents": {
+                "type": "object",
+                "properties": {
+                  "attack": {
+                    "type": "number"
+                  },
+                  "skill": {
+                    "type": "number"
+                  },
+                  "burst": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "attack",
+                  "skill",
+                  "burst"
+                ]
+              },
+              "stats": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "snapshot": {
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
+              },
+              "sets": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              }
+            },
+            "required": [
+              "name",
+              "level",
+              "element",
+              "max_level",
+              "cons",
+              "weapon",
+              "talents",
+              "stats",
+              "snapshot",
+              "sets"
+            ]
+          }
         }
       },
       "required": [
@@ -402,7 +497,8 @@
         "debug",
         "runtime",
         "config_file",
-        "num_targets"
+        "num_targets",
+        "char_details"
       ]
     }
   }

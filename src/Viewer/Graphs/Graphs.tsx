@@ -5,8 +5,6 @@ import {
   Legend,
   Pie,
   Cell,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   PieChart,
@@ -136,6 +134,9 @@ export default function Graphs({ data }: { data: SimResults }) {
 
   return (
     <div className="m-2 flex flex-col gap-2">
+      <div className="bg-gray-600 relative rounded-md p-2 pt-10">
+        <DPSOverTime data={data} />
+      </div>
       <div className="grid grid-cols-2 gap-2">
         <div className="rounded-md p-2 pt-10 bg-gray-600 relative">
           <span className="ml-2 mt-1 font-bold capitalize absolute top-0 left-0">
@@ -220,9 +221,6 @@ export default function Graphs({ data }: { data: SimResults }) {
             </PieChart>
           </ResponsiveContainer>
         </div>
-      </div>
-      <div className="bg-gray-600 relative rounded-md p-2 pt-10">
-        <DPSOverTime data={data} />
       </div>
       {charSelected === "" ? null : (
         <div className="grid grid-cols-2 gap-2">

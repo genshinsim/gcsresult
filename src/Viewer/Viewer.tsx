@@ -46,13 +46,7 @@ const opts = [
   "icd",
 ];
 
-const defOpts = [
-  "damage",
-  "element",
-  "action",
-  "energy",
-  "pre_damage_mods",
-];
+const defOpts = ["damage", "element", "action", "energy", "pre_damage_mods"];
 
 type ViewProps = {
   classes?: string;
@@ -154,9 +148,14 @@ export function Viewer(props: ViewerProps) {
           " p-4 rounded-lg bg-gray-800 flex flex-col w-full place-content-center items-center"
         }
       >
-        <div className="mb-4">
-          The data you have provided is not a valid format. Please click the
-          close button and upload a valid file.
+        <div className="mb-4 text-center">
+          The data you have provided is not a valid format.{" "}
+          <span className="font-bold">
+            Please make sure you are using gcsim version 0.4.25 or higher.
+          </span>
+          <br />
+          <br />
+          Please click the close button and upload a valid file.
         </div>
         <div>
           <Button intent="danger" icon="cross" onClick={props.handleClose}>
