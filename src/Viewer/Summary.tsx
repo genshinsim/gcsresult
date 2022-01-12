@@ -117,6 +117,8 @@ export default function Summary({ data }: { data: SimResults }) {
     pyro: { name: "pryo%", flat: -1, per: PyroP, val: [], count: 0, t: "%" },
     cryo: { name: "cryo%", flat: -1, per: CryoP, val: [], count: 0, t: "%" },
     hydro: { name: "hydro%", flat: -1, per: HydroP, val: [], count: 0, t: "%" },
+    geo: { name: "geo%", flat: -1, per: GeoP, val: [], count: 0, t: "%" },
+    anemo: { name: "anemo%", flat: -1, per: AnemoP, val: [], count: 0, t: "%" },
     phys: { name: "phys%", flat: -1, per: PhysP, val: [], count: 0, t: "%" },
     heal: { name: "heal", flat: -1, per: Heal, val: [], count: 0, t: "%" },
   };
