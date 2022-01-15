@@ -4,10 +4,6 @@ import { useVirtual } from "react-virtual";
 import AutoSizer from "react-virtualized-auto-sizer";
 import React from "react";
 
-//every time i scroll x pixels, i want to add at least x pixels worth of items to be rendered and remove x pixels worth of items from the top
-//every item that gets added should have a min pixel height
-//we want to maintain at least container height + 100% worth items rendered
-
 const Row = ({ row }: { row: DebugRow }) => {
   const cols = row.slots.map((slot, ci) => {
     const events = slot.map((e, ei) => {
@@ -51,9 +47,12 @@ export function Debugger({ data, team }: { data: DebugRow[]; team: string[] }) {
   const rowVirtualizer = useVirtual({
     size: data.length,
     parentRef,
-    keyExtractor: React.useCallback((index : number) => {
-      return data[index].f
-    }, [data])
+    keyExtractor: React.useCallback(
+      (index: number) => {
+        return data[index].f;
+      },
+      [data]
+    ),
   });
 
   const char = team.map((c) => {
@@ -69,11 +68,12 @@ export function Debugger({ data, team }: { data: DebugRow[]; team: string[] }) {
 
   return (
     <div className="h-full m-2 p-2 rounded-md bg-gray-600 text-xs flex flex-col">
-      <AutoSizer>
+      <AutoSizer defaultHeight={100}>
         {({ height, width }) => (
           <div
             ref={parentRef}
             style={{
+              minHeight: "100px",
               height: height,
               width: width,
               overflow: "auto",

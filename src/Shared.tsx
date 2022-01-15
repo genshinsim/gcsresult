@@ -70,7 +70,7 @@ export default function Shared({ path }: { path: string }) {
   };
 
   return (
-    <div className="p-8 h-full flex flex-col">
+    <div className="p-8 h-screen flex flex-col">
       <Viewer data={data} names="grow" handleClose={handleClose} />
     </div>
   );
