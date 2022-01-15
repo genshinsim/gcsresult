@@ -59,7 +59,7 @@ export default function Character({ char }: Props) {
 
   for (const key in char.sets) {
     arts.push(
-      <div className="w-8 flex flex-col rounded-md">
+      <div className="w-8 flex flex-col rounded-md" key={key}>
         <Tooltip2
           content={<div className="bg-gray-800 m-2 p-2 rounded-md">{key}</div>}
         >
