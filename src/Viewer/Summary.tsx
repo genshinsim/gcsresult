@@ -132,7 +132,7 @@ export default function Summary({ data }: { data: SimResults }) {
         case "both":
           statRows[key].val.push(
             <td key={char.name} className="text-right">
-              {char.stats[s.flat]}
+              {char.stats[s.flat].toFixed(0)}
             </td>
           );
           statRows[key].val.push(
@@ -149,7 +149,7 @@ export default function Summary({ data }: { data: SimResults }) {
         case "f":
           statRows[key].val.push(
             <td key={char.name} className="text-right">
-              {char.stats[s.flat]}
+              {char.stats[s.flat].toFixed(0)}
             </td>
           );
           statRows[key].val.push(<td key={char.name + "%"}></td>);

@@ -4,12 +4,12 @@ import { Config } from "./Config";
 import { SimResults } from "./DataType";
 import { Debugger } from "./DebugView";
 import { Details } from "./Details";
-import Graphs from "./Graphs/Graphs";
 import { Options, OptionsProp } from "./Options";
 import { DebugRow, parseLog } from "./parse";
 import Summary from "./Summary";
 import Ajv from "ajv";
 import schema from "./DataType.schema.json";
+import Share, { ShareProps } from "./Share";
 
 const ajv = new Ajv();
 
@@ -60,13 +60,26 @@ type ViewProps = {
 function ViewOnly(props: ViewProps) {
   const [tabID, setTabID] = React.useState<string>("result");
   const [optOpen, setOptOpen] = React.useState<boolean>(false);
+  const [shareOpen, setShareOpen] = React.useState<boolean>(false);
 
   const handleTabChange = (next: string) => {
     if (next === "settings") {
       setOptOpen(true);
       return;
     }
+    if (next == "share") {
+      setShareOpen(true);
+      return;
+    }
     setTabID(next);
+  };
+
+  const shareProps: ShareProps = {
+    isOpen: shareOpen,
+    handleClose: () => {
+      setShareOpen(false);
+    },
+    data: props.data,
   };
 
   const optProps: OptionsProp = {
@@ -109,6 +122,7 @@ function ViewOnly(props: ViewProps) {
           <Tab id="config" title="Config" className="focus:outline-none" />
           <Tab id="debug" title="Debug" className="focus:outline-none" />
           <Tab id="settings" title="Settings" className="focus:outline-none" />
+          <Tab id="share" title="Share" className="focus:outline-none" />
           <Tabs.Expander />
           <Button icon="cross" intent="danger" onClick={props.handleClose} />
         </Tabs>
@@ -127,6 +141,7 @@ function ViewOnly(props: ViewProps) {
       </div>
 
       <Options {...optProps} />
+      <Share {...shareProps} />
     </div>
   );
 }
