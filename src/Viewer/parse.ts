@@ -156,17 +156,6 @@ export function parseLog(
           activeIndex = team.findIndex((e) => e === d.target) + 1;
           e.msg += " to " + d.target;
         }
-
-        if (d.M.includes("cooldown")) {
-          // Add expiry frame to the end if exists
-          switch (d.expiry) {
-            case undefined:
-              break;
-            default:
-              e.msg += strFrameWithSec(d.expiry);
-              e.msg = d.type + " " + e.msg
-          }
-        }
         e.icon = "play_arrow";
         break;
       case "element":
@@ -177,25 +166,11 @@ export function parseLog(
           case "application":
             // console.log(d.existing);
             e.msg = d.applied_ele + " applied";
-            if (d.existing) {
-              e.msg += " to [";
-              before = d.existing.map(x => x.replace(/: (.+)/, " ($1)"));
-              if (before.length > 0) {
-                e.msg += before.join(" ");
-              } else {
-                e.msg += "no aura";
-              }
-              e.msg += "]";
-            }
-            if (d.after) {
-              e.msg += " ➜ ["
-              after = d.after.map(x => x.replace(/: (.+)/, " ($1)"))
-              if (after.length > 0) {
-                e.msg += after.join(" ");
-              } else {
-                e.msg += "no aura";
-              }
-              e.msg += "]"
+            if (d.existing && d.existing.length > 0) {
+              e.msg += " to ";
+              d.existing.forEach((ele: string) => {
+                e.msg += ele.replace(/: (.+)/, " ($1)") + " ";
+              });
             }
             break;
           case "refreshed":
@@ -257,22 +232,6 @@ export function parseLog(
       case "construct":
         e.icon = "apartment";
         break;
-      case "status":
-        e.icon = "iso";
-
-        // Add expiry frame to the end if exists
-            switch (d.expiry) {
-                    case undefined:
-                    break;
-                default:
-                e.msg += strFrameWithSec(d.expiry)
-                e.msg = d.key + " " + e.msg
-            }
-
-        if (d.target != undefined) {
-          e.target = d.target;
-        }
-        break;
       default:
         e.msg = e.event + ": " + e.msg;
     }
@@ -287,17 +246,6 @@ export function parseLog(
 
   // console.log(result);
 
-  return result;
-}
-
-export function strFrameWithSec(frame: int): string {
-  if (frame == -1) {
-    return " [-1]";
-  }
-  result = " [" +
-    frame.toString() + " | " +
-    (frame / 60).toFixed(2).toString() +
-    "s]";
   return result;
 }
 
@@ -324,7 +272,7 @@ export function eventColor(eve: string): string {
     case "pre_damage_mods":
       return "#818CF8";
     case "status":
-      return "#902D89";
+      return "";
     case "action":
       return "#AB5F45";
     case "queue":
