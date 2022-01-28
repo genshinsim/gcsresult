@@ -179,7 +179,9 @@ export function parseLog(
             e.msg = d.applied_ele + " applied";
             if (d.existing) {
               e.msg += " to [";
-              before = d.existing.map(x => x.replace(/: (.+)/, " ($1)"));
+              let before = d.existing.map((x: string) =>
+                x.replace(/: (.+)/, " ($1)")
+              );
               if (before.length > 0) {
                 e.msg += before.join(" ");
               } else {
@@ -189,7 +191,9 @@ export function parseLog(
             }
             if (d.after) {
               e.msg += " ➜ [";
-              after = d.after.map(x => x.replace(/: (.+)/, " ($1)"))
+              let after = d.after.map((x: string) =>
+                x.replace(/: (.+)/, " ($1)")
+              );
               if (after.length > 0) {
                 e.msg += after.join(" ");
               } else {
@@ -261,13 +265,13 @@ export function parseLog(
         e.icon = "iso";
 
         // Add expiry frame to the end if exists
-            switch (d.expiry) {
-                    case undefined:
-                    break;
-                default:
-                e.msg += strFrameWithSec(d.expiry);
-                e.msg = d.key + " " + e.msg;
-            }
+        switch (d.expiry) {
+          case undefined:
+            break;
+          default:
+            e.msg += strFrameWithSec(d.expiry);
+            e.msg = d.key + " " + e.msg;
+        }
 
         if (d.target != undefined) {
           e.target = d.target;
@@ -290,14 +294,12 @@ export function parseLog(
   return result;
 }
 
-export function strFrameWithSec(frame: int): string {
+export function strFrameWithSec(frame: number): string {
   if (frame == -1) {
     return " [-1]";
   }
-  result = " [" +
-    frame.toString() + " | " +
-    (frame / 60).toFixed(2).toString() +
-    "s]";
+  let result =
+    " [" + frame.toString() + " | " + (frame / 60).toFixed(2).toString() + "s]";
   return result;
 }
 
