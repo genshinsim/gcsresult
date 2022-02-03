@@ -219,7 +219,10 @@ export function parseLog(
             " from " +
             d.source +
             ", next: " +
-            Math.round(d["post_recovery"]);
+            Math.floor(d["post_recovery"]);
+          if (d["max_energy"] == d["post_recovery"]) {
+            e.msg += " (max)";
+          }
         }
         if (e.msg.includes("adding energy")) {
           e.msg += ` ${d["rec'd"]}`;
